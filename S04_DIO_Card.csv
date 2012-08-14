@@ -1,0 +1,2 @@
+*Slot;class=datatable,Card Type Found Description;width=350,Found;width=100,Configured;width=100
+4,@GV.S04_Type_String;BackColor=000000;ForeColor=16777215,@GV.S04_Type;Rights=8;BackColor=000000;ForeColor=16777215;format=6;inifile=./ini/cardtypefound.ini,@GV.S04_CFG_Type;Rights=8;BackColor=000000;ForeColor=16777215;format=6;inifile=./ini/cardtypeConfig.ini
