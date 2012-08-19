@@ -305,15 +305,15 @@ Future 	=	41
 .           	.
 .           	.
 .           	.
-Future	=	62		
+SYS	=	62 (* SYS = System *)
 VNC	=	63 (* VNC = Verification and Calibration *)
-CSR	=	64
-HEX	=	65</code></PRE>
+CSR	=	64 (* CSR = Configuration Save Restore *)
+HR	=	65 (* HR = Hex Repeater *)
+</code></PRE>
 
-<TABLE cols=3 width=626>
-
-<TR VALIGN="top">
-<TD width="30%"><b>ibHost_Restore</b></TD>
+<TAB.           	.
+SYS	=	62		
+VNC	=	63 (* VNC = Verification and Calibration *)</TD>
 <TD width="23%">Default:</TD>
 <TD width="47%">TRUE</TD></TR>
 
@@ -487,17 +487,38 @@ HEX	=	65</code></PRE>
 <TD width="47%">Input</TD></TR></TABLE>
 
 <P>This is the number of the ACCOL III LIST that contains a comma separated string 
-    that includes the Description to be used in the Hex Repeater Change log, the 
-    associated Hex Repeater Download command code, and the variable name of the 
-    change flag used by the Hex Repeater host.&nbsp; For example - 
-    'Low-DP-Cutoff, 51, EGM01.Config_Change_Flag' includes the Description of 'Low-DP-Cutoff', the Hex 
-    Repeater Command code 51, and the variable name EGM01.Config_Change_Flag.</P>
+    that includes:</P>
+    <P style="margin-left: 80px">The Description to be used in the Hex Repeater Change log, 
+    <P style="margin-left: 80px">The associated Hex Repeater Download command code
+    <P style="margin-left: 80px">The variable name of the change flag used by the Hex Repeater host.
+    &nbsp;
+    <P style="margin-left: 80px"> For example - 
+    'Low-DP-Cutoff, 51, EGM01.Config_Change_Flag' includes the Description of 'Low-DP-CutoffThe associated Hex Repeater Download command code
+    <P style="margin-left: 80px">The variable name of the change flag used by the Hex 
+        Repeater host.&nbsp;
+    <P style="margin-left: 120px">By convention, this variable name should be 
+        INST.Config_Change_Flag.&nbsp; INST is defined by the value at 
+        istrProgram_POU_Name.<P style="margin-left: 120px">&nbsp;It is possible to enter the symbol '*', and the 
+        function block will automatically insert the variable name meeting this 
+        convention.
+    <P style="margin-left: 120px">Also, if some variable name other than 
+        Config_Change_Flag is used, it is possible to use this format - #.variable_name, 
+        and the value at istrProgram_POU_Name will be substitued for the #.<P style="margin-left: 80px"> For example - 
+    'Low-DP-Cutoff, 51, EGM01.Config_Change_Flag' includes the Description of 
+    'Low-DP-Cutoff', the Hex Repeater Command code 51, and the variable name 
+    EGM01.Config_Change_Flag.</P>
+    <P style="margin-left: 80px"> 'Low-DP-Cutoff,51,$' includes the description of 
+        'Low-DP-Cutoff', the Hex Repeater Command code 51, and the function block will 
+        insert EGM01.Config_Change_Flag for the $.</P>
+    <P style="margin-left: 80px"> 'Low-DP-Cutoff,51,#.Change_Detect' includes the 
+        description of 'Low-DP-Cutoff', the Hex Repeater Command code 51, and the 
+        function block will insert the value of istrProgram_POU_Name (in our example, 
+        this has been EGM01) in front of the .Change_Detect, to produce 
+        EGM01.Change_Detect.</P>
+    <P style="margin-left: 80px"> &nbsp;</P>
     <P>If the value is calculated by the RTU, then no command code is included.&nbsp; 
-        The string should be constructed with no space between the 1st and 2nd commas.&nbsp; For example 'SG-Calc,,EGM01.Config_Change_Flag'</P>
-	<P>If this parameter is left unassigned, or the value is less than or equal to 0, 
-		then the Hex Repeater Edit/Change Log processing will be disabled.&nbsp; </P>
-	<P>Likewise, if this parameter is assigned to a valid list number, but the number of 
-		elements in the list = 0, then the Hex Repeater Edit/Change log processing will 
+        The string should be constructed with no space between the 1st and 2nd commas.&nbsp; 
+        For example 'SG-Calc,,EGM01.Config_Change_Flag'g will 
 		be disabled.</P>
 	<P>The number of elements of this list should match the number of elements in the 
 		iiData_Value_List. The maximum lenght of the Descriptor string should be 20 
@@ -506,26 +527,16 @@ HEX	=	65</code></PRE>
 		to be in included in the Hex Repeater Change log, create a Null string for the 
 		corresponding element of the iiHex_Change_Desc_List.&nbsp;&nbsp; When the Change 
 		Detect Function Block detects a Null string, it will not make an entry to the 
-		Hex Repeater Change Array for this element in the list.  </P>
+		Hex Repeater Change Array for this element in the list.  Note: If a variable from the iiData_Value_List is not 
+        to be in included in the Hex Repeater Change log, create an empty string for the 
+        corresponding element of the iiHex_Change_Desc_List.&nbsp;&nbsp; When the Change 
+        Detect Function Block detects an empty string, it will not make an entry to the 
+        Hex Repeater Change Array for this element in the list.  </P>
 
 <TABLE cols=3 width=626>
 
 <TR VALIGN="top">
-<TD width="30%"><b>iiNumber_of_Elements </b></TD>
-<TD width="23%">Default:</TD>
-<TD width="47%">None</TD></TR>
-
-<TR VALIGN="top">
-<TD width="30%">&nbsp;</TD>
-<TD width="23%">Format:</TD>
-<TD width="47%">INT</TD></TR>
-
-<TR VALIGN="top">
-<TD width="30%">&nbsp;</TD>
-<TD width="23%">Input/Output:</TD>
-<TD width="47%">Input</TD></TR></TABLE>
-
-<P>This parameter should be set to match the number of elements in the data 
+<TD width="30%"><b>iiNumber_of_Elements  
 	structure defined by istrData_Struct_Variable.  Continuing the example, this should be set
 	to 12</P>
 
@@ -1012,7 +1023,7 @@ END_TYPE
 <TABLE cols=3 width=626>
 
 <TR VALIGN="top">
-<TD width="30%"><b>oiReq_Rtn_Statusatus</b></TD>
+<TD width="30%"><b>oiReq_Rtn_Status</b></TD>
 <TD width="23%">Default:</TD>
 <TD width="47%">0 (idle)</TD></TR>
 
@@ -1160,26 +1171,6 @@ END_TYPE
 
 </TABLE>
 &nbsp;
-<TABLE cols=3 width=626>
-
-<TR VALIGN="top">
-<TD width="30%"><b>odiStatus</b></TD>
-<TD width="23%">Default:ult:</TD>
-<TD width="47%">None</TD></TR>
-
-<TR VALIGN="top">
-<TD width="30%">&nbsp;</TD>
-<TD width="23%">Format:</TD>
-<TD width="47%">UDINT</TD></TR>
-
-<TR VALIGN="top">
-<TD width="30%">&nbsp;</TD>
-<TD width="23%">Input/Output:</TD>
-<TD width="47%">Output</TD></TR></TABLE><BR>
-
-	<P>indicates the execution Status of the function block.</P>
-
-	<P>The following are the status codes that can occur.</P>
 
 <TABLE cols=2 width=646>
 
@@ -1244,6 +1235,146 @@ END_TYPE
 <TD width="80%">Variable not defined in PDD</TD>
 <TD width="20%">-25</TD></TR>
 </TABLE>
+
+
+&nbsp;
+<TABLE cols=3 width=626>
+
+<TR VALIGN="top">
+<TD width="30%"><b>obCold_Start_SS</b></TD>
+<TD width="23%">Default:</TD>
+<TD width="47%">None</TD></TR>
+
+<TR VALIGN="top">
+<TD width="30%">&nbsp;</TD>
+<TD width="23%">Format:</TD>
+<TD width="47%">BOOL</TD></TR>
+
+<TR VALIGN="top">
+<TD width="30%">&nbsp;</TD>
+<TD width="23%">Input/Output:</TD>
+<TD width="47%">Output</TD></TR></TABLE><BR>
+
+	<P>This output is set TRUE for one task execution after a Cold Start.</P>
+
+&nbsp;
+<TABLE cols=3 width=626>
+
+<TR VALIGN="top">
+<TD width="30%"><b>obWarm_Start_SS</b></TD>
+<TD width="23%">Default:</TD>
+<TD width="47%">None</TD></TR>
+
+<TR VALIGN="top">
+<TD width="30%">&nbsp;</TD>
+<TD width="23%">Format:</TD>
+<TD width="47%">BOOL</TD></TR>
+
+<TR VALIGN="top">
+<TD width="30%">&nbsp;</TD>
+<TD width="23%">Input/Output:</TD>
+<TD width="47%">Output</TD></TR></TABLE><BR>
+
+	<P>This output is set TRUE for one task execution after a Warm Start.</P>
+
+&nbsp;
+<TABLE cols=3 width=626>
+
+<TR VALIGN="top">
+<TD width="30%"><b>oiUpdate_Delay_ET</b></TD>
+<TD width="23%">Default:</TD>
+<TD width="47%">None</TD></TR>
+
+<TR VALIGN="top">
+<TD width="30%">&nbsp;</TD>
+<TD width="23%">Format:</TD>
+<TD width="47%">INT</TD></TR>
+
+<TR VALIGN="top">
+<TD width="30%">&nbsp;</TD>
+<TD width="23%">Input/Output:</TD>
+<TD width="47%">Output</TD></TR></TABLE><BR>
+
+	<P>This output shows the seconds remaining until the Change Detect Function block will issue a request command of 2, after a change is detected.</P>
+
+
+&nbsp;
+<TABLE cols=3 width=626>
+
+<TR VALIGN="top">
+<TD width="30%"><b>odiLast_Edit_TS</b></TD>
+<TD width="23%">Default:</TD>
+<TD width="47%">None</TD></TR>
+
+<TR VALIGN="top">
+<TD width="30%">&nbsp;</TD>
+<TD width="23%">Format:</TD>
+<TD width="47%">DINT</TD></TR>
+
+<TR VALIGN="top">
+<TD width="30%">&nbsp;</TD>
+<TD width="23%">Input/Output:</TD>
+<TD width="47%">Output</TD></TR></TABLE><BR>
+
+	<P>This output is the UNIX Time Stamp of the last change detected.</P>
+
+&nbsp;
+<TABLE cols=3 width=626>
+
+<TR VALIGN="top">
+<TD width="30%"><b>obCD_Ready_Flag</b></TD>
+<TD width="23%">Default:</TD>
+<TD width="47%">None</TD></TR>
+
+<TR VALIGN="top">
+<TD width="30%">&nbsp;</TD>
+<TD width="23%">Format:</TD>
+<TD width="47%">BOOL</TD></TR>
+
+<TR VALIGN="top">
+<TD width="30%">&nbsp;</TD>
+<TD width="23%">Input/Output:</TD>
+<TD width="47%">Output</TD></TR></TABLE><BR>
+
+		<pre><code> 
+When this output is TRUE, it means that the Change Detect function block is now executing and detecting changes.
+-- The Ready_Flag will be set TRUE
+--- When the Warm Start or Cold Start initialization steps are complete
+--- When either
+---- The CSR_Enab flag is TRUE
+---- The CSR_Enab flag is FALSE, but some number of task executions have occured (This needs to be kept to a minimum)
+--- If the CSR_Enab flag is TRUE, we have a valid Return_Status code:
+---- Return_Status = 11 - Successful Cold Start Recovery
+---- Return_Status = 13 - Cold Start Recovery from *_DC.INI (could transition to 21 if ibHost_Restore = FALSE)
+---- Return_Status = -1 - No files available during Cold Start Recovery (could transiiton to 81 of ibHost_Restore = FALSE)
+--- If the CSR_Enab flag is FALSE, the Return_Status code is ignored
+
+Note, the FB will set the Ready_Flag TRUE, even when the CSR_Enab flag never gets set to TRUE.  In this case, the Function Block will
+still update the structures and the Hex Repeater Edit log.  However, since the CSR program is not available, the *_UC.ini
+and *_DC.INI files will not be wrtten to or read from.
+		</code></pre>
+&nbsp;
+<TABLE cols=3 width=626>
+
+<TR VALIGN="top">
+<TD width="30%"><b>odiStatus</b></TD>
+<TD width="23%">Default:ult:</TD>
+<TD width="47%">None</TD></TR>
+
+<TR VALIGN="top">
+<TD width="30%">&nbsp;</TD>
+<TD width="23%">Format:</TD>
+<TD width="47%">UDINT</TD></TR>
+
+<TR VALIGN="top">
+<TD width="30%">&nbsp;</TD>
+<TD width="23%">Input/Output:</TD>
+<TD width="47%">Output</TD></TR></TABLE><BR>
+
+	<P>indicates the execution Status of the function block.</P>
+
+	<P>The following are the status codes that can occur.</P>
+
 
 	<H3>See also:</H3>
 
